@@ -1,0 +1,6 @@
+= pearseed
+
+ simple rTorrent web interface using retort
+
+ = TODO
+ - Add installation guide

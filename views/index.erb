@@ -1,0 +1,100 @@
+<html>
+<head>
+<title>retort</title>
+<style type="text/css">
+  body {
+    font-family: Arial;
+    font-size: 10pt;
+    color: #555;
+  }
+  
+  .meter { 
+    height: 5px; 
+    position: relative;
+    background: #E2CD94;
+  } 
+  .meter > span { 
+    display: block;
+    height: 100%;
+    background-color:  #457C41;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .input {
+    width: 100%;
+    border: 3px solid #ccc;
+    margin: 3px;
+    height: 40px;
+    font-size: 110%;
+    padding: 5px;
+  }
+
+  .torrent .name {
+    font-family: Arial, serif; 
+    text-decoration: none;
+    font-size: 1.3em;
+    font-weight: 400;
+    color: #222;
+  }
+  .torrent {
+    padding: 10px;
+    background-color: #f6f7f7;
+  }
+
+  .complete {
+    background-color: #D8F2A0;
+  }
+  .box { 
+    float: right; 
+    font-weight: bold;
+    text-align: right;
+   }
+   .speed { color: #111;  }
+   .header {
+      background-color: #ddd;
+      padding: 10px;
+    }
+
+  .error { color: #7A002B; }
+  a.action { 
+    font-size: 90%; 
+    color: #458C41; 
+    text-transform: uppercase; 
+    text-decoration: none;
+    padding-right: 5px;
+  }
+  a.action:hover {color: #000;}
+  .actions { text-align: right; }
+</style>
+</head>
+<body id="main">
+
+<div class="header">
+<form method="POST" action="/create">
+	<input class="input" name="url" type="text" />
+</form>
+</div>
+
+<% @torrents.each do |t|%>
+<div class='torrent <%= "#{t.complete.truth ? "complete" : ""}" %>'>
+  <span class="box">
+    <span class="speed"><%= t.down_rate %></span>
+  </span> 
+  <a class="name" href="#"><%= t.name %></a>
+  <div class="error"><%= t.message %></div>
+	<%= "Seeders: #{t.seeders}, Leechers: #{t.leechers}" %>
+	Up: <%= t.up_rate %>
+	Down: <%= t.down_rate %>
+	Progress: <%= "#{t.downloaded}/#{t.size} (#{(t.completed_raw/t.size_raw.to_f).percent}%)" %>
+  <div class="actions">
+    <% t.actions.each do |action| %>
+    <% action_label = action; action_label = "remove" if action == :erase %>
+  	<a class="action" href='/torrents/<%= "#{t.info_hash}/#{action}" %>'><%= action_label %></a>  
+    <% end %>
+  </div>
+</div>
+	<div class="meter"><span style="width: <%="#{(t.completed_raw/t.size_raw.to_f).percent}"%>%"></span></div>
+<% end %>
+</body>
+</html>
