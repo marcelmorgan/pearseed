@@ -2,5 +2,6 @@
 
  simple rTorrent web interface using retort
 
- = TODO
+== TODO
  - Add installation guide
+ - Add Tests
