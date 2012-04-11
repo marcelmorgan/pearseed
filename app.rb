@@ -2,7 +2,7 @@ require 'sinatra'
 require 'retort'
 
 Retort::Service.configure do |c|
- c.url = "http://elijah/RPC2"
+ c.url = "http://localhost/scgi"
 end
 
 get '/' do
